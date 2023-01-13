@@ -1,13 +1,23 @@
 import User from '../../domain/User';
+import { UserRepository } from '../../domain/UserRepository';
 import UserRepositorySQL from '../../infrastructure/repositories/UserRepositorySQL';
 
-async function CreateUser(name: string, email: string, password: string) {
-  const user = new User(null, name, email, password);
-  if(!user) {
-    return false;
-  }
-
-  return await UserRepositorySQL.create(user);
+interface CreateUserRequest {
+  name: string;
+  email: string;
+  password: string
 }
 
-export default CreateUser;
+class CreateUser {
+  constructor(
+    private createUserUseCase: UserRepository,
+  ) {}
+
+  async execute({name, email, password}: CreateUserRequest) {
+    const user = new User({id: null, name, email, password});
+
+    return await this.createUserUseCase.create(user);
+  }
+}
+
+export default new CreateUser(UserRepositorySQL);

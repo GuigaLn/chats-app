@@ -13,7 +13,7 @@ class UserRepositorySQL extends UserRepository {
 
   async create(user: User): Promise<User> {
     const rows = await query('SELECT 1', []);
-    console.log(rows);
+
     return new Promise((resolve) => resolve(user));
   }
 }

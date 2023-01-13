@@ -7,7 +7,7 @@ class UserController {
     const { name, email, password } = request.body;
 
     // Treatment
-    const user = await CreateUser(name, email, password);
+    const user = await CreateUser.execute({ name, email, password });
 
     // Output
     response.json({ user });

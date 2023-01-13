@@ -1,15 +1,9 @@
 import User from './User';
 
-export class UserRepository {
-  async index(): Promise<User[]> {
-    throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
-  }
+export abstract class UserRepository {
+  abstract index(): Promise<User[]>;
 
-  async show(id: string): Promise<User | null> {
-    throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
-  }
+  abstract show(id: string): Promise<User | null>;
 
-  async create(user: User): Promise<User> {
-    throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
-  }
+  abstract create(user: User): Promise<User>
 }

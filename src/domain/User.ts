@@ -1,14 +1,43 @@
-class User {
+interface Props {
   id: string | null;
   name: string;
   email: string;
   password: string;
+}
 
-  constructor(id: string | null = null, name: string, email: string, password: string) {
-    this.id = id;
-    this.name = name;
-    this.email = email;
-    this.password = password;
+class User {
+  private props: Props;
+
+  get id () {
+    return this.props.id;
+  }
+
+  get name () {
+    return this.props.name;
+  }
+
+  get email () {
+    return this.props.email;
+  }
+
+  get password () {
+    return this.props.password;
+  }
+
+  constructor(props: Props) {
+    if(!props.name || props.name.length < 6) {
+      throw new Error('Name is required!');
+    }
+
+    if(!props.email || props.email.length < 6 || !props.email.includes('@')) {
+      throw new Error('E-mail is required!');
+    }
+
+    if(!props.password || props.password.length < 6) {
+      throw new Error('Name is required!');
+    }
+
+    this.props = props;
   }
 }
 
