@@ -1,3 +1,5 @@
+import AppError from '../../infrastructure/config/AppError';
+
 interface Props {
   id: string | null;
   name: string;
@@ -26,15 +28,15 @@ class User {
 
   constructor(props: Props) {
     if(!props.name || props.name.length < 6) {
-      throw new Error('Name is required!');
+      throw new AppError('Name is required!', 400);
     }
 
     if(!props.email || props.email.length < 6 || !props.email.includes('@')) {
-      throw new Error('E-mail is required!');
+      throw new AppError('E-mail is required!', 400);
     }
 
     if(!props.password || props.password.length < 6) {
-      throw new Error('Name is required!');
+      throw new AppError('Password is required!', 400);
     }
 
     this.props = props;
