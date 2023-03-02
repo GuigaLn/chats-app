@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import Joi from 'joi';
-import { messages } from 'joi-translation-pt-br';
 
 class Validators {
   // USADA PARA VALIDAR O HEADER (RECEBE O SCHEMA COMO PARAMETRO)
@@ -16,10 +15,10 @@ class Validators {
 
   // USADA PARA VALIDAR O BODY (RECEBE O SCHEMA COMO PARAMETRO)
   public body(request: Request, schema: Joi.Schema): { success: boolean, message: string } {
-    const result = schema.validate(request.body, { abortEarly: false, stripUnknown: true, messages });
+    const result = schema.validate(request.body, { abortEarly: false, stripUnknown: true });
 
     if (result.error) {
-      return { success: false, message: result.error.details[0].message };
+      return { success: false, message: result.error.details[0].message.replace(/"/gi, '') };
     }
 
     return { success: true, message: 'Success in Validation' };

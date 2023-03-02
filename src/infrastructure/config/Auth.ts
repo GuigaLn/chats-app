@@ -1,0 +1,32 @@
+import * as jwt from 'jsonwebtoken';
+
+require('dotenv/config');
+
+export const HASURA_GRAPHQL_JWT_SECRET = {
+  type: process.env.JWT_SECRET_TYPE || 'HS256',
+  key:
+    process.env.JWT_SECRET_KEY  ||
+    'this-is-a-generic-HS256-secret-key-and-you-should-really-change-it',
+};
+
+const JWT_CONFIG: jwt.SignOptions = {
+  algorithm: HASURA_GRAPHQL_JWT_SECRET.type as 'HS256' | 'RS512',
+  expiresIn: '10h',
+};
+
+export interface GenerateJWTParams {
+  defaultRole: string;
+  allowedRoles: string[];
+  otherClaims?: Record<string, string | string[]>;
+}
+
+export function generateJWT(params: GenerateJWTParams): string {
+  const payload = {
+    'https://hasura.io/jwt/claims': {
+      'x-hasura-allowed-roles': params.allowedRoles,
+      'x-hasura-default-role': params.defaultRole,
+      ...params.otherClaims,
+    },
+  };
+  return jwt.sign(payload, HASURA_GRAPHQL_JWT_SECRET.key, JWT_CONFIG);
+}

@@ -18,3 +18,4 @@ export async function query(sql: string, params: any): Promise<any[]> {
   const { rows } = await PostgreSQLDataSource.query(sql, params);
   return rows;
 }
+

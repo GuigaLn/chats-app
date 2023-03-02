@@ -1,9 +1,8 @@
-import { v4 } from 'uuid';
-import { UserRepository } from '../../domain/contracts/UserRepository';
+import IUserRepository from '../../domain/contracts/IUserRepository';
 import User from '../../domain/entities/User';
 import { query } from '../datasorces/PostgreSQLDataSource';
 
-class UserRepositorySQL extends UserRepository {
+class UserRepository extends IUserRepository {
   async index(): Promise<User[]> {
     const [rows] = await query(`
       SELECT uuid, nome, email from usuarios;
@@ -29,20 +28,6 @@ class UserRepositorySQL extends UserRepository {
 
     return rows;
   }
-
-
-  async create(user: User): Promise<User | false> {
-    const [rows] = await query(`
-      INSERT INTO usuarios(uuid, nome, email, senha)
-      VALUES ($1, $2, $3, $4) returning uuid;
-    `, [v4() ,user.name, user.email, user.password]);
-
-    if(!rows.uuid) {
-      return false;
-    }
-
-    return new User({id: rows.id, name: user.name, email: user.email, password: '#######'});
-  }
 }
 
-export default new UserRepositorySQL();
+export default new UserRepository();
